@@ -5,6 +5,7 @@ const cors = require("cors");
 
 app.use(express.json());
 app.use(cors());
+app.use(express.static("dist"));
 
 const morgan = require("morgan");
 
@@ -99,8 +100,6 @@ app.delete("/api/persons/:id", (request, response) => {
 
   response.status(204).end();
 });
-
-const PORT = 3001;
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
