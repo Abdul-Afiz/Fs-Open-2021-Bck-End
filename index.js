@@ -1,8 +1,13 @@
 const { request, response } = require("express");
 const express = require("express");
 const app = express();
+const cors = require("cors");
+
 app.use(express.json());
+app.use(cors());
+
 const morgan = require("morgan");
+
 morgan.token("body", (request, response) => {
   return JSON.stringify(request.body);
 });
@@ -78,46 +83,6 @@ app.post("/api/persons", (request, response) => {
   response.json(body);
 });
 
-// app.post("/api/persons", (request, response) => {
-//   const body = request.body;
-
-//   console.log(body.content);
-
-//   if (!body.content) {
-//     return response.status(400).json({ error: "content is missing" });
-//   }
-
-//   const person = {
-//     content: body.content,
-//     date: new Date(),
-//     id: generateId(),
-//   };
-
-//   persons = persons.concat(person);
-
-//   response.json(person);
-// });
-
-// app.post("/api/persons", (request, response) => {
-//   const body = request.body;
-
-//   console.log(body.content);
-
-//   if (!body.content) {
-//     return response.status(400).json({ error: "content is missing" });
-//   }
-
-//   const person = {
-//     content: body.content,
-//     date: new Date(),
-//     id: generateId(),
-//   };
-
-//   persons = persons.concat(person);
-
-//   response.json(person);
-// });
-
 app.get("/api/persons/:id", (request, response) => {
   const id = Number(request.params.id);
   const person = persons.find((person) => person.id === id);
@@ -135,7 +100,7 @@ app.delete("/api/persons/:id", (request, response) => {
   response.status(204).end();
 });
 
-const PORT = 3001;
+const PORT = process.env.Port || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
