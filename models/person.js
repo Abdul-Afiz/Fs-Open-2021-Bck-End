@@ -1,25 +1,27 @@
 require("dotenv").config();
 
 const mongoose = require("mongoose");
+const mongooseUniqueValidator = require("mongoose-unique-validator");
 
 const url = process.env.MONGODB_URI;
-
-console.log(url);
 
 console.log("connecting to", url);
 
 mongoose
-  .connect(url)
+  .connect(url, { useNewUrlParser: true })
   .then((result) => console.log("connected to MongoDB"))
-  .catch((error) => console.log("error connecting to mongodb", error));
+  .catch((error) =>
+    console.log("error connecting to mongodb :", error.message)
+  );
 
 const personSchema = new mongoose.Schema({
-  name: String,
-  number: Number,
+  name: { type: String, unique: true, minlength: 3, required: true },
+  number: { type: String, minlength: 8, required: true },
   date: Date,
 });
 
-const Person = mongoose.model("Person", personSchema);
+// mongooseUniqueValidator.defaults.message =
+//   "Error, expected {PATH} to be unique.";
 
 personSchema.set("toJSON", {
   transform: (document, returnedObj) => {
@@ -29,4 +31,8 @@ personSchema.set("toJSON", {
   },
 });
 
-module.exports = mongoose.model("Person", personSchema);
+personSchema.plugin(mongooseUniqueValidator);
+
+const Person = mongoose.model("Person", personSchema);
+
+module.exports = Person;

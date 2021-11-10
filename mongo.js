@@ -1,3 +1,4 @@
+require("dotenv").config();
 const mongoose = require("mongoose");
 if (process.argv.length < 3) {
   console.log(
@@ -9,7 +10,7 @@ if (process.argv.length < 3) {
 const password = process.argv[2];
 console.log(process.argv);
 
-const url = `mongodb+srv://abdul-afeez:adekunle19@cluster0.tldi2.mongodb.net/person?retryWrites=true&w=majority`;
+const url = process.env.MONGOD_URI;
 
 mongoose.connect(url);
 
