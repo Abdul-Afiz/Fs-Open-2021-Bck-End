@@ -77,10 +77,6 @@ app.post("/api/persons", (request, response, next) => {
     .save()
     .then((savedPerson) => response.json(savedPerson))
     .catch((error) => next(error));
-
-  // return response.send("done!!!");
-
-  // persons = persons.concat(person);
 });
 
 app.delete("/api/persons/:id", (request, response, next) => {
